@@ -5,6 +5,10 @@ const cors = require("cors");
 const session = require("express-session");
 const mongodbStore = require("connect-mongodb-session")(session);
 
+// local module
+
+const { authRouter } = require("./routes/authRouter");
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -22,6 +26,8 @@ app.use(
     store: store,
   })
 );
+
+app.use("/auth", authRouter);
 
 mongoose
   .connect(process.env.MONGO_URI)
