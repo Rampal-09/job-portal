@@ -8,6 +8,7 @@ const mongodbStore = require("connect-mongodb-session")(session);
 // local module
 
 const { authRouter } = require("./routes/authRouter");
+const { jobRouter } = require("./routes/jobRouter");
 
 const app = express();
 app.use(express.json());
@@ -28,6 +29,7 @@ app.use(
 );
 
 app.use("/auth", authRouter);
+app.use(jobRouter);
 
 mongoose
   .connect(process.env.MONGO_URI)
