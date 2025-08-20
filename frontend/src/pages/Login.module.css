@@ -1,0 +1,114 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.loginContainer h1 {
+  text-align: center;
+  margin-bottom: 5px;
+  padding: 5px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.loginForm {
+  width: 100%;
+  gap: 15px;
+  margin: 0 auto;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loginForm label {
+  width: 75%;
+  padding: 5px;
+  color: #555;
+  font-weight: 500;
+}
+
+.loginForm input {
+  width: 75%;
+  height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.loginForm input:hover {
+  border-color: #bbb; /* Hover effect */
+  transform: translateY(-1px); /* Subtle lift */
+}
+
+.loginForm input:focus {
+  border: 2px solid #e74c3c;
+  outline: none;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.loginForm button {
+  width: 75%;
+  height: 40px;
+  padding: 8px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  background-color: #e74c3c;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+}
+.loginForm button:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.extraInfo {
+  text-align: center;
+  margin: 15px;
+}
+
+.extraInfo a {
+  color: #4caf50;
+  text-decoration: none;
+  position: relative;
+}
+.extraInfo a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 50%;
+  background-color: #4caf50;
+  transition: all 0.3s ease;
+}
+
+.extraInfo a:hover {
+  color: #388e3c;
+  transform: translateY(-1px);
+}
+
+.extraInfo a:hover::after {
+  width: 100%;
+  left: 0;
+}

@@ -1,0 +1,130 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  background-color: #fff;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 100px auto;
+  padding: 25px;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.signupHeading {
+  text-align: center;
+  padding: 7px;
+  margin-bottom: 5px;
+}
+.signupHeading h1 {
+  font-weight: 700;
+  font-size: 28px;
+  margin-bottom: 6px;
+  color: #2c3e50;
+}
+
+.signupHeading h4 {
+  font-weight: 300;
+  font-size: 18px;
+  color: #7f8c8d;
+}
+.signupForm {
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 15px;
+  margin: 0 auto;
+
+  border: 1px solid white;
+  border-radius: 10px;
+}
+.signupForm input {
+  width: 75%;
+  height: 40px;
+  border: 1px solid lightgray;
+  outline: none;
+
+  border-radius: 7px;
+  padding: 8px;
+}
+.signupForm select {
+  width: 75%;
+  height: 40px;
+  outline: none;
+  border: 1px solid lightgray;
+  border-radius: 7px;
+  padding: 8px;
+  background-color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 14px;
+}
+.signupForm select option {
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+  background-color: white;
+}
+
+.signupForm input:focus,
+.signupForm select:focus {
+  border: 1px solid #4caf50;
+  outline: none;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.signupForm button {
+  width: 75%;
+  height: 35px;
+  border-radius: 10px;
+  background-color: green;
+  padding: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+}
+.signupForm button:hover {
+  background-color: #388e3c;
+}
+.extraInfo {
+  text-align: center;
+  margin: 15px;
+}
+.extraInfo p {
+  margin-bottom: 8px;
+}
+.extraInfo a {
+  color: #4caf50;
+  text-decoration: none;
+  position: relative;
+}
+.extraInfo a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 50%;
+  background-color: #4caf50;
+  transition: all 0.3s ease;
+}
+
+.extraInfo a:hover {
+  color: #388e3c;
+  transform: translateY(-1px);
+}
+
+.extraInfo a:hover::after {
+  width: 100%;
+  left: 0;
+}
