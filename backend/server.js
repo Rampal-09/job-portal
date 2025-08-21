@@ -11,8 +11,20 @@ const { authRouter } = require("./routes/authRouter");
 const { jobRouter } = require("./routes/jobRouter");
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
-app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+
+app.get("/", (req, res, next) => {
+  res.json({ message: "Server is running!" });
+});
 
 const store = new mongodbStore({
   uri: process.env.MONGO_URI,

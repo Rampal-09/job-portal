@@ -3,7 +3,14 @@ const bcrypt = require("bcryptjs");
 
 exports.postSignUp = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
+    console.log("===========================================");
+    console.log("🚀 SIGNUP REQUEST RECEIVED!");
+    console.log("Name:", name);
+    console.log("Email:", email);
+    console.log("Password:", password);
+    console.log("Role:", role);
+    console.log("===========================================");
 
     const existingUser = await User.findOne({ email });
 
@@ -16,12 +23,13 @@ exports.postSignUp = async (req, res, next) => {
       name,
       email,
       password: hashPassword,
+      role,
     });
 
     await newUser.save();
-    res.status(201).json({ message: "user created succesfully" });
+    res.status(201).json({ message: "User created successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: err.message || "Something went wrong" });
   }
 };
 
