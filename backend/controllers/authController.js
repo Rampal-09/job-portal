@@ -35,17 +35,20 @@ exports.postSignUp = async (req, res, next) => {
 
 exports.postLogin = async (req, res, next) => {
   try {
+    console.log("loginData", req.body);
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
 
     if (!user) {
+      console.log("user not match", user);
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
+      console.log("password not match", password);
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
