@@ -1,16 +1,18 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const { validationResult } = require("express-validator");
 
 exports.postSignUp = async (req, res, next) => {
+  const { name, email, password, role } = req.body;
   try {
-    const { name, email, password, role } = req.body;
-    console.log("===========================================");
-    console.log("🚀 SIGNUP REQUEST RECEIVED!");
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Role:", role);
-    console.log("===========================================");
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: errors.array(),
+      });
+    }
 
     const existingUser = await User.findOne({ email });
 
