@@ -37,6 +37,13 @@ exports.postSignUp = async (req, res, next) => {
 
 exports.postLogin = async (req, res, next) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: "validation error",
+        erros: errors.array(),
+      });
+    }
     console.log("loginData", req.body);
     const { email, password } = req.body;
 
@@ -63,6 +70,11 @@ exports.postLogin = async (req, res, next) => {
     req.session.isLoggedIn = true;
     res.status(200).json({ message: "Login successful" });
   } catch (error) {
+    console.log("backend error", err);
+    console.log("error name", err.name);
+    console.log("error code", err.code);
+    console.log("error stack", err.stack);
+    console.log("error code", err.code);
     res.status(500).json({ message: "Server error" });
   }
 };
