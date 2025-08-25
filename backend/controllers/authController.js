@@ -41,7 +41,7 @@ exports.postLogin = async (req, res, next) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({
         message: "validation error",
-        erros: errors.array(),
+        errors: errors.array(),
       });
     }
     console.log("loginData", req.body);
@@ -65,16 +65,12 @@ exports.postLogin = async (req, res, next) => {
       id: user._id,
       name: user.name,
       email: user.email,
+      role: user.role,
     };
 
     req.session.isLoggedIn = true;
     res.status(200).json({ message: "Login successful" });
   } catch (error) {
-    console.log("backend error", err);
-    console.log("error name", err.name);
-    console.log("error code", err.code);
-    console.log("error stack", err.stack);
-    console.log("error code", err.code);
     res.status(500).json({ message: "Server error" });
   }
 };
