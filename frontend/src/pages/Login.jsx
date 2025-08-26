@@ -1,5 +1,5 @@
 import { useState } from "react";
-import css from "../pages/Login.module.css";
+import css from "./Login.module.css";
 import { login } from "../services/authApi";
 
 const Login = () => {
@@ -31,12 +31,11 @@ const Login = () => {
       setMessage(response.message || "login successful!");
     } catch (err) {
       const fieldError = {};
-      if (err.name === "validation") {
+      if (err.type === "validation") {
         err.errors.forEach((err) => {
-          fieldError[err.path] = err.message;
+          fieldError[err.path] = err.msg;
         });
         setErrors(fieldError);
-        console.log(err.errors);
       } else {
         setMessage(
           err.response?.data?.message || err.message || "Something went wrong"

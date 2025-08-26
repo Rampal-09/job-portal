@@ -41,18 +41,25 @@
 .loginForm label {
   width: 75%;
   padding: 5px;
+
   color: #555;
   font-weight: 500;
 }
 
 .loginForm input {
-  width: 75%;
+  width: 100%;
   height: 40px;
+  margin-top: 4px;
   padding: 8px 12px;
   border: 1px solid #ddd;
   border-radius: 10px;
   font-size: 14px;
 }
+.loginForm div {
+  width: 75%;
+  padding: 8px 12px;
+}
+
 .loginForm input:hover {
   border-color: #bbb; /* Hover effect */
   transform: translateY(-1px); /* Subtle lift */

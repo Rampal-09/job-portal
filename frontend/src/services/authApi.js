@@ -10,12 +10,12 @@ export const signup = async (userData) => {
     if (err.response?.data) {
       throw {
         type: "validation",
-        errors: err.response.data.errors,
+        errors: err.response.data.errors || [],
         message: err.response.data.message,
       };
     } else {
       throw {
-        type: "genral",
+        type: "general",
         message:
           err.response?.data?.message || err.message || "Something went wrong",
       };
@@ -27,20 +27,24 @@ export const login = async (loginData) => {
   try {
     console.log("loginData", loginData);
     const res = await axios.post(`${API_URL}/auth/login`, loginData);
-    console.log("data from backend", res);
+
     return res.data;
   } catch (err) {
-    console.log("axious error", err);
-    if (err.response?.data) {
+    if (err.response?.status === 400) {
       throw {
         type: "validation",
-        errors: err.response.data.errros,
+        errors: err.response.data.errors,
+        message: err.response.data.message,
+      };
+    } else if (err.response?.status === 401) {
+      throw {
+        type: "auth",
+
         message: err.response?.data?.message,
       };
     } else {
       throw {
-        type: "genral",
-        errors: err.response.data.errors,
+        type: "general",
         message:
           err.response?.data?.message || err.message || "Something went wrong",
       };

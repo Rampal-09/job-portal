@@ -1,5 +1,5 @@
 import { useState } from "react";
-import css from "../pages/Signup.module.css";
+import css from "./Signup.module.css";
 import { signup } from "../services/authApi";
 import validator from "validator";
 
@@ -27,7 +27,7 @@ const Signup = () => {
     setMessage("");
     setErrors({});
     const formData = { name, email, password, confirmPassword, role };
-    console.log("Frontend formData:", formData);
+
     try {
       // if (validator.isEmpty(name)) {
       //   return setMessage("Name is required");
@@ -78,6 +78,7 @@ const Signup = () => {
           fieldError[err.path] = err.msg;
         });
         setErrors(fieldError);
+        console.log(errors);
       } else {
         setMessage(err.message || "Signup failed");
       }
