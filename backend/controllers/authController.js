@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 
 exports.postSignUp = async (req, res, next) => {
+  console.log("data come from router", req.body);
   const { name, email, password, role } = req.body;
   try {
     const errors = validationResult(req);

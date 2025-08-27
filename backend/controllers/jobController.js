@@ -2,6 +2,9 @@ const Job = require("../models/job");
 
 exports.postJob = async (req, res, next) => {
   try {
+    console.log("data come from router", req.body);
+    console.log(req.session.user);
+
     const { title, description, company, location, salary } = req.body;
 
     const newjob = new Job({
@@ -10,10 +13,11 @@ exports.postJob = async (req, res, next) => {
       company,
       location,
       salary,
-      postedBy: req.session.user._id,
+      postedBy: req.session.user.id,
     });
 
     await newjob.save();
+    console.log("data is save on database");
     res.status(201).json({ message: "job created successfuly" });
   } catch (err) {
     return res.status(500).json({ message: "Server error" });
