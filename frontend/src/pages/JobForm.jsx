@@ -9,7 +9,7 @@ const JobForm = () => {
   const [description, setDescription] = useState("");
 
   const [errors, setError] = useState({});
-
+  const [message, setMessage] = useState("");
   const validateForm = () => {
     const newErrors = {};
 
@@ -48,8 +48,7 @@ const JobForm = () => {
   };
 
   const handleJobData = async (e) => {
-    console.log();
-    e.preventDefault("job data", title, company, location, salary, description);
+    e.preventDefault();
     const newErros = validateForm();
     if (Object.keys(newErros).length > 0) {
       setError(newErros);
@@ -64,10 +63,14 @@ const JobForm = () => {
         salary: Number(salary),
         description,
       };
-      const response = createJob(jobData);
-      console.log("response from server", response);
+      const response = await createJob(jobData);
+      setMessage(response.message);
     } catch (err) {
-      console.log(err);
+      if (err.type === "auth") {
+        setMessage(err.message);
+      } else {
+        setMessage(err.response?.data?.message);
+      }
     }
 
     setTitle("");
@@ -85,6 +88,21 @@ const JobForm = () => {
           <button className={css.closeBtn} type="button">
             ×
           </button>
+
+          {message && (
+            <div
+              style={{
+                padding: "10px",
+                margin: "10px 0",
+                backgroundColor: message.includes("successfully")
+                  ? "lightgreen"
+                  : "lightcoral",
+                borderRadius: "5px",
+              }}
+            >
+              {message}
+            </div>
+          )}
         </div>
         <form className={css.JobForm} onSubmit={handleJobData}>
           <div className={css.formGroup}>
