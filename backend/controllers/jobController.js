@@ -2,9 +2,6 @@ const Job = require("../models/job");
 
 exports.postJob = async (req, res, next) => {
   try {
-    console.log("data come from router", req.body);
-    console.log(req.session.user);
-
     const { title, description, company, location, salary } = req.body;
 
     const newjob = new Job({
@@ -17,7 +14,7 @@ exports.postJob = async (req, res, next) => {
     });
 
     await newjob.save();
-    console.log("data is save on database");
+
     res.status(201).json({ message: "job created successfuly" });
   } catch (err) {
     return res.status(500).json({ message: "Server error" });
@@ -26,9 +23,9 @@ exports.postJob = async (req, res, next) => {
 
 exports.getJob = async (req, res, next) => {
   try {
-    const allJobs = await Job.find().populate("postedBy", "name email");
-    console.log(allJobs);
-    res.status(200).json({ message: "feched all jobs" });
+    const allJobs = await Job.find().populate("postedBy", "name email role");
+
+    res.status(200).json({ message: "feched all jobs", jobs: allJobs });
   } catch (err) {
     res.status(500).json({ message: "server error" });
   }
