@@ -7,5 +7,6 @@ const { validateLogin } = require("../validation/validation");
 authRouter.post("/signUp", validateSignup(), authController.postSignUp);
 authRouter.post("/login", validateLogin(), authController.postLogin);
 authRouter.post("/logout", authController.postLogout);
+authRouter.get("/me", authController.getCurrentUser);
 
 exports.authRouter = authRouter;

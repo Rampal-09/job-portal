@@ -35,3 +35,13 @@ export const getJobs = async () => {
     console.log(err);
   }
 };
+
+export const getCurrentUser = async () => {
+  try {
+    const res = await axios.get(`${API_URL}/auth/me`);
+    return res.data;
+  } catch (err) {
+    console.log("Not authenticated:", err.response);
+    return null;
+  }
+};

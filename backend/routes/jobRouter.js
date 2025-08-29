@@ -12,8 +12,7 @@ jobRouter.post(
 );
 jobRouter.get(
   "/jobs",
-  authMiddleware,
-  roleMiddleware(["employer"]),
+
   jobController.getJob
 );
 jobRouter.put(

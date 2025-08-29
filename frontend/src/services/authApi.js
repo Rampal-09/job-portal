@@ -30,6 +30,8 @@ export const login = async (loginData) => {
 
     return res.data;
   } catch (err) {
+    console.log("err");
+    console.log("err response ", err.response);
     if (err.response?.status === 400) {
       throw {
         type: "validation",

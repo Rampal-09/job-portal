@@ -1,19 +1,25 @@
 import { useEffect, useState } from "react";
 import { getJobs } from "../services/jobApi";
 import JobCard from "./JobCard";
+import { getCurrentUser } from "../services/jobApi";
 
 const JobList = () => {
   const [jobs, setJobs] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    console.log("allJobs", jobs);
-  }, [jobs]);
+    console.log("currentuser", currentUser);
+  }, []);
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const data = await getJobs();
-        console.log("jobList", data.jobs);
-        setJobs(data.jobs);
+        const [jobData, userData] = await Promise.all([
+          getJobs(),
+          getCurrentUser(),
+        ]);
+
+        setJobs(jobData.jobs);
+        setCurrentUser(userData?.user);
       } catch (err) {
         console.log(err);
       }
@@ -24,7 +30,12 @@ const JobList = () => {
   return (
     <>
       {jobs.map((job) => (
-        <JobCard job={job} key={job._id}></JobCard>
+        <JobCard
+          job={job}
+          key={job._id}
+          userRole={currentUser?.role}
+          userId={currentUser?.id}
+        ></JobCard>
       ))}
     </>
   );
