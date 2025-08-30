@@ -3,7 +3,6 @@ const API_URL = "http://localhost:5000";
 
 export const createJob = async (jobData) => {
   try {
-    console.log("res go to from jobRouter");
     const res = await axios.post(`${API_URL}/jobs`, jobData);
 
     return res.data;
@@ -29,11 +28,9 @@ export const createJob = async (jobData) => {
 export const getJobs = async () => {
   try {
     const res = await axios.get(`${API_URL}/jobs`);
-    console.log("response", res.data);
+
     return res.data;
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 };
 
 export const getCurrentUser = async () => {
@@ -41,7 +38,22 @@ export const getCurrentUser = async () => {
     const res = await axios.get(`${API_URL}/auth/me`);
     return res.data;
   } catch (err) {
-    console.log("Not authenticated:", err.response);
     return null;
   }
+};
+
+export const updateJob = async (editId, updateData) => {
+  try {
+    const res = await axios.put(`${API_URL}/jobs/${editId}`, updateData);
+
+    return res.data;
+  } catch (err) {}
+};
+
+export const DeleteJob = async (deleteId) => {
+  try {
+    const res = await axios.delete(`${API_URL}/jobs/${deleteId}`);
+    console.log("jobData", res.data);
+    return res.data;
+  } catch (err) {}
 };

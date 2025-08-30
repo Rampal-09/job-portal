@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 
 exports.postSignUp = async (req, res, next) => {
-  console.log("data come from router", req.body);
   const { name, email, password, role } = req.body;
   try {
     const errors = validationResult(req);
@@ -45,20 +44,18 @@ exports.postLogin = async (req, res, next) => {
         errors: errors.array(),
       });
     }
-    console.log("loginData", req.body);
+
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      console.log("user not match", user);
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      console.log("password not match", password);
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
@@ -83,4 +80,19 @@ exports.postLogout = (req, res, next) => {
     }
     res.status(200).json({ message: "logout successfuly" });
   });
+};
+
+exports.getCurrentUser = (req, res, next) => {
+  try {
+    const user = {
+      id: req.session.user.id,
+      name: req.session.user.name,
+      email: req.session.user.email,
+      role: req.session.user.role,
+    };
+
+    res.status(200).json({ user });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
 };

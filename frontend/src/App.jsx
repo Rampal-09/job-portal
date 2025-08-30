@@ -10,7 +10,7 @@ function App() {
     <>
       <Signup></Signup>
       <Login></Login>
-      {/* <JobForm></JobForm> */}
+      <JobForm></JobForm>
       <JobList></JobList>
     </>
   );

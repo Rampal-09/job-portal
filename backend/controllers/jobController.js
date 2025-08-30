@@ -44,7 +44,8 @@ exports.updateJob = async (req, res, next) => {
     job.salary = req.body.salary;
 
     await job.save();
-    res.status(201).json({ message: "job update successfuly" });
+    console.log("data is save in database");
+    res.status(201).json({ job });
   } catch (error) {
     console.error(error);
     res
@@ -65,7 +66,7 @@ exports.deleteJob = async (req, res, next) => {
 
     await job.deleteOne();
 
-    res.status(200).json({ message: "Job deleted successfully" });
+    res.status(200).json({ job });
   } catch (err) {
     res.status(500).json({ message: "Error deleting job", error: err.message });
   }

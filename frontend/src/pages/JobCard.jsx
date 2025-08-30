@@ -1,10 +1,17 @@
 import css from "./JobCard.module.css";
 
-const JobCard = ({ job, userRole, userId }) => {
-  if (!job) return;
+const JobCard = ({ job, userRole, userId, onEdit, onDelete }) => {
+  if (!job) return null;
   const isOwner =
     userRole === "employer" && job.postedBy && job.postedBy._id === userId;
 
+  const handleEdit = () => {
+    if (onEdit) onEdit(job);
+  };
+
+  const handleDelete = () => {
+    onDelete(job._id);
+  };
   return (
     <div className={css.JobCard}>
       <div>
@@ -26,8 +33,12 @@ const JobCard = ({ job, userRole, userId }) => {
       </div>
       {isOwner && (
         <div className={css.jobActions}>
-          <button className={css.editBtn}>Edit</button>
-          <button className={css.deleteBtn}>Delete</button>
+          <button className={css.editBtn} onClick={handleEdit}>
+            Edit
+          </button>
+          <button className={css.deleteBtn} onClick={handleDelete}>
+            Delete
+          </button>
         </div>
       )}
       {userRole === "candidate" && (
