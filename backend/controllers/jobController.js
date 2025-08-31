@@ -1,4 +1,5 @@
 const Job = require("../models/job");
+const User = require("../models/user");
 
 exports.postJob = async (req, res, next) => {
   try {
@@ -69,5 +70,68 @@ exports.deleteJob = async (req, res, next) => {
     res.status(200).json({ job });
   } catch (err) {
     res.status(500).json({ message: "Error deleting job", error: err.message });
+  }
+};
+
+exports.postApplyJob = async (req, res, next) => {
+  try {
+    const jobId = req.params.id;
+    const userId = req.session.user.id;
+
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    if (!job.applicants.includes(userId)) {
+      job.applicants.push(userId);
+
+      await job.save();
+
+      return res.status(200).json({ message: "Applied successfully", job });
+    } else {
+      return res
+        .status(400)
+        .json({ message: "You already applied for this job" });
+    }
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: err.message });
+  }
+};
+
+exports.postAddFavorite = async (req, res, next) => {
+  try {
+    const jobId = req.params.id;
+    const userId = req.session.user.id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const job = await Job.findById(jobId);
+
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    if (userId && !user.favorite.includes(jobId)) {
+      user.favorite.push(jobId);
+      await user.save();
+
+      return res
+        .status(200)
+        .json({ message: "Job added to favorites", favorites: user.favorite });
+    } else {
+      return res
+        .status(400)
+        .json({ message: "You already add  this in favorite" });
+    }
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: err.message });
   }
 };

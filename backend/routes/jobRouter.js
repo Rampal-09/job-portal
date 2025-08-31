@@ -28,4 +28,11 @@ jobRouter.delete(
   jobController.deleteJob
 );
 
+jobRouter.post("/jobs/apply/:id", authMiddleware, jobController.postApplyJob);
+jobRouter.post(
+  "/jobs/favorite/:id",
+  authMiddleware,
+  jobController.postAddFavorite
+);
+
 exports.jobRouter = jobRouter;

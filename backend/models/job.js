@@ -8,6 +8,7 @@ const jobSchema = new mongoose.Schema({
   salary: Number,
   postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   createdAt: { type: Date, default: Date.now },
+  applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
 module.exports = mongoose.model("Job", jobSchema);
