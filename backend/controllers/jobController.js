@@ -1,3 +1,4 @@
+const { application } = require("express");
 const Job = require("../models/job");
 const User = require("../models/user");
 
@@ -130,6 +131,34 @@ exports.postAddFavorite = async (req, res, next) => {
     }
   } catch (err) {
     console.log(err);
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: err.message });
+  }
+};
+
+exports.getAppliedJob = async (req, res, next) => {
+  const userId = req.session.user.id;
+  try {
+    const appliedJobs = await Job.find({ applicants: userId }).populate(
+      "applicants"
+    );
+
+    res.status(200).json({ appliedJobs });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: err.message });
+  }
+};
+
+exports.getFavoriteJobs = async (req, res, next) => {
+  try {
+    const userId = req.session.user.id;
+    const favoriteJobs = await User.findById(userId).populate("favorite");
+
+    res.status(200).json({ favoriteJobs });
+  } catch (err) {
     res
       .status(500)
       .json({ message: "Something went wrong", error: err.message });
