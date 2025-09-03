@@ -57,3 +57,56 @@ export const DeleteJob = async (deleteId) => {
     return res.data;
   } catch (err) {}
 };
+
+export const applyJob = async (Id) => {
+  try {
+    const res = await axios.post(`${API_URL}/jobs/apply/${Id}`);
+    return res.data;
+  } catch (err) {
+    throw {
+      message: err.response?.data?.message,
+    };
+  }
+};
+
+export const addToFavoite = async (id) => {
+  try {
+    const res = await axios.post(`${API_URL}/jobs/favorite/${id}`);
+
+    return res.data;
+  } catch (err) {
+    throw {
+      message: err.response?.data?.message,
+    };
+  }
+};
+
+export const getAppliedJob = async () => {
+  try {
+    const res = await axios.get(`${API_URL}/jobs/apply`);
+
+    return res.data;
+  } catch (err) {
+    throw {
+      message: err.response.data.message,
+    };
+  }
+};
+
+export const getFavoriteJobs = async () => {
+  try {
+    const res = await axios.get(`${API_URL}/jobs/favorite`);
+
+    return res.data.favoriteJobs;
+  } catch (err) {
+    throw {
+      message: err.response.data.message,
+    };
+  }
+};
+
+export const removeFavoriteJob = async (id) => {
+  const res = await axios.delete(`${API_URL}/jobs/favorite/${id}`);
+  console.log("res", res);
+  return res.data;
+};

@@ -164,3 +164,30 @@ exports.getFavoriteJobs = async (req, res, next) => {
       .json({ message: "Something went wrong", error: err.message });
   }
 };
+
+exports.removeFavroteJobs = async (req, res, next) => {
+  try {
+    const userId = req.session.user.id;
+    const jobId = req.params.id;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { favorite: jobId } },
+      { new: true }
+    ).populate("favorite");
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    console.log("Updated favorites:", updatedUser.favorite);
+
+    return res.json({
+      message: "Job removed from favorites",
+      favorite: updatedUser.favorite,
+    });
+  } catch (err) {
+    console.error("Error removing favorite job:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};

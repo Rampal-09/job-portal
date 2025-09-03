@@ -1,0 +1,50 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 1rem;
+}
+.emptyState {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.emptyBox {
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.emptyTitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.emptyText {
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+.jobsGrid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
