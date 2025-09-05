@@ -1,3 +1,4 @@
+import { useState } from "react";
 import css from "./JobCard.module.css";
 
 const JobCard = ({
@@ -12,6 +13,8 @@ const JobCard = ({
   isApplied,
 }) => {
   if (!job) return null;
+
+  const [isExpanded, setIsExpended] = useState(false);
   const isOwner =
     userRole === "employer" && job.postedBy && job.postedBy._id === userId;
 
@@ -44,15 +47,6 @@ const JobCard = ({
     }
   };
 
-  // const handleApply = () => {
-  //   onApply(job._id);
-  // };
-
-  // const handleFavorite = () => {
-  //   console.log("click");
-  //   onFavorite(job._id);
-  // };
-
   const handleEdit = () => {
     if (onEdit) onEdit(job);
   };
@@ -66,6 +60,14 @@ const JobCard = ({
     }
   };
 
+  const toggleDescription = () => {
+    setIsExpended((prev) => !prev);
+  };
+
+  const words = job?.description.split("") || [];
+
+  const sortdescription = words.slice(0, 50).join("");
+
   return (
     <div className={css.JobCard}>
       <div>
@@ -78,7 +80,16 @@ const JobCard = ({
         <span className={css.company}>{job?.company}</span>
         <span className={css.location}>{job?.location}</span>
       </div>
-      <p className={css.description}>{job?.description}</p>
+      <p className={css.description}>
+        {isExpanded
+          ? job?.description
+          : sortdescription + (words.length > 60 ? "..." : "")}
+        {words.length > 60 && (
+          <button className={css.seeMoreBtn} onClick={toggleDescription}>
+            {isExpanded ? "See less" : "See more"}
+          </button>
+        )}
+      </p>
       <div className={css.jobFooter}>
         <div className={css.postInfo}>
           <span className={css.postedBy}>{job?.postedBy?.name}</span>
