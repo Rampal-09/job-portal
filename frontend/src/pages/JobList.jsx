@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { getJobs } from "../services/jobApi";
+
 import JobCard from "./JobCard";
 import { getCurrentUser } from "../services/jobApi";
 import EditJobModal from "../pages/EditJobModal";
 import { updateJob } from "../services/jobApi";
 // import job from "../../../backend/models/job";
 import { DeleteJob } from "../services/jobApi";
+import { applyJob } from "../services/jobApi";
+
+import { addToFavoite } from "../services/jobApi";
 
 const JobList = () => {
   const [jobs, setJobs] = useState([]);
@@ -14,16 +18,33 @@ const JobList = () => {
   const [editingJob, setEditingJob] = useState(null);
   const [isEditModelOpen, setIsEditModelOpen] = useState(false);
 
+  const handleApplyJob = async (jobId) => {
+    try {
+      const response = await applyJob(jobId);
+      alert("Successfully applied for the job!");
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleFavoriteJob = async (jobId) => {
+    try {
+      const response = await addToFavoite(jobId);
+      alert("Job added to favorites!");
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   const handleEditJob = (job) => {
     setEditingJob(job);
     setIsEditModelOpen(true);
   };
 
   const handleDelteJob = async (deleteId) => {
-    console.log("deleteId", deleteId);
     try {
       const data = await DeleteJob(deleteId);
-      console.log("data", data);
+
       setJobs((prevJobs) => prevJobs.filter((job) => job._id !== data.job._id));
     } catch (err) {}
   };
@@ -51,9 +72,7 @@ const JobList = () => {
 
         setJobs(jobData.jobs);
         setCurrentUser(userData?.user);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     };
     fetchJobs();
   }, []);
@@ -68,6 +87,8 @@ const JobList = () => {
           userId={currentUser?.id}
           onEdit={handleEditJob}
           onDelete={handleDelteJob}
+          onApply={handleApplyJob}
+          onFavorite={handleFavoriteJob}
         ></JobCard>
       ))}
       {isEditModelOpen && (

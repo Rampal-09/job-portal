@@ -170,7 +170,7 @@ const JobForm = () => {
               <label htmlFor="salary">Annual Salary(INR)</label>
               <input
                 className={errors.salary && css.errorInput}
-                type="text"
+                type="number"
                 id="salary"
                 placeholder="e.g., 75000"
                 value={salary}

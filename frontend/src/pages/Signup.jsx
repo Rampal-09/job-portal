@@ -78,7 +78,7 @@ const Signup = () => {
           fieldError[err.path] = err.msg;
         });
         setErrors(fieldError);
-        console.log(errors);
+        
       } else {
         setMessage(err.message || "Signup failed");
       }

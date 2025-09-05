@@ -2,8 +2,10 @@ import "./App.css";
 import Signup from "./pages/signup";
 import Login from "./pages/Login";
 import JobForm from "./pages/JobForm";
-import JobCard from "./pages/JobCard";
+
 import JobList from "./pages/JobList";
+import AppliedJobs from "./pages/AppliedJobs";
+import FavoriteJobs from "./pages/FavoriteJobs";
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
       <Login></Login>
       <JobForm></JobForm>
       <JobList></JobList>
+      <AppliedJobs></AppliedJobs>
+      <FavoriteJobs></FavoriteJobs>
     </>
   );
 }

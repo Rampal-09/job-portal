@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import { getFavoriteJobs, removeFavoriteJob } from "../services/jobApi";
+import {
+  getFavoriteJobs,
+  removeFavoriteJob,
+  getAppliedJob,
+  applyJob,
+} from "../services/jobApi";
 import JobCard from "./JobCard";
 import styles from "./favoriteJobs.module.css";
 
 const FavoriteJobs = () => {
   const [favoriteJobs, setFavoriteJobs] = useState([]);
+  const [appliedJobs, setAppliedJobs] = useState([]);
   useEffect(() => {
     fetchFavoriteJobs();
+    fetchAppliedJobs();
   }, []);
 
   const fetchFavoriteJobs = async () => {
@@ -18,10 +25,30 @@ const FavoriteJobs = () => {
       console.error("Error fetching favorite jobs:", err);
     }
   };
+
+  const fetchAppliedJobs = async () => {
+    try {
+      const response = await getAppliedJob();
+      setAppliedJobs(response.appliedJobs.map((job) => job._id));
+    } catch (err) {
+      console.error("Error fetching applied jobs:", err);
+    }
+  };
+
+  const handleApply = async (jobId) => {
+    try {
+      await applyJob(jobId);
+      setAppliedJobs((prev) => [...prev, jobId]);
+      alert("Applied successfully!");
+    } catch (err) {
+      console.error("Error applying to job:", err);
+      alert("Failed to apply.");
+    }
+  };
   const handleRemoveFavorite = async (JobId) => {
     try {
       const response = await removeFavoriteJob(JobId);
-      console.log(response.favorite);
+
       setFavoriteJobs(response.favorite);
     } catch (err) {
       console.error("Error removing favorite job:", err);
@@ -50,6 +77,7 @@ const FavoriteJobs = () => {
             <JobCard
               key={job._id}
               job={job}
+              onApply={handleApply}
               userRole="candidate"
               onRemoveFavorite={handleRemoveFavorite}
             />

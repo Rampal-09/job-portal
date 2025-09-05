@@ -1,9 +1,57 @@
 import css from "./JobCard.module.css";
 
-const JobCard = ({ job, userRole, userId, onEdit, onDelete }) => {
+const JobCard = ({
+  job,
+  userRole,
+  userId,
+  onEdit,
+  onDelete,
+  onApply,
+  onFavorite,
+  onRemoveFavorite,
+  isApplied,
+}) => {
   if (!job) return null;
   const isOwner =
     userRole === "employer" && job.postedBy && job.postedBy._id === userId;
+
+  const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+
+      const now = new Date();
+      const diffTime = Math.abs(now - date);
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 0) {
+        return "Today";
+      } else if (diffDays === 1) {
+        return "yesterDay";
+      } else if (diffDays < 7) {
+        return `${diffDays} days ago`;
+      } else if (diffDays < 30) {
+        const weeks = Math.floor(diffDays / 7);
+        return `${weeks} week${weeks > 1 ? "s" : ""} ago`;
+      } else {
+        return date.toLocaleDateString("en-IN", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+      }
+    } catch (err) {
+      return "Date unavailable";
+    }
+  };
+
+  // const handleApply = () => {
+  //   onApply(job._id);
+  // };
+
+  // const handleFavorite = () => {
+  //   console.log("click");
+  //   onFavorite(job._id);
+  // };
 
   const handleEdit = () => {
     if (onEdit) onEdit(job);
@@ -12,6 +60,12 @@ const JobCard = ({ job, userRole, userId, onEdit, onDelete }) => {
   const handleDelete = () => {
     onDelete(job._id);
   };
+  const handleRemoveFavorite = () => {
+    if (onRemoveFavorite) {
+      onRemoveFavorite(job._id);
+    }
+  };
+
   return (
     <div className={css.JobCard}>
       <div>
@@ -28,7 +82,7 @@ const JobCard = ({ job, userRole, userId, onEdit, onDelete }) => {
       <div className={css.jobFooter}>
         <div className={css.postInfo}>
           <span className={css.postedBy}>{job?.postedBy?.name}</span>
-          <span className={css.postedDate}>{job?.createdAt}</span>
+          <span className={css.postedDate}>{formatDate(job?.createdAt)}</span>
         </div>
       </div>
       {isOwner && (
@@ -43,8 +97,20 @@ const JobCard = ({ job, userRole, userId, onEdit, onDelete }) => {
       )}
       {userRole === "candidate" && (
         <div className={css.candidateActions}>
-          <button className={css.applyBtn}>apply</button>
-          <button className={css.saveBtn}>save</button>
+          <button className={css.applyBtn} onClick={() => onApply(job._id)}>
+            {isApplied ? "Applied" : "Apply"}
+          </button>
+          {onFavorite && (
+            <button className={css.saveBtn} onClick={() => onFavorite(job._id)}>
+              Save
+            </button>
+          )}
+
+          {onRemoveFavorite && (
+            <button className={css.saveBtn} onClick={handleRemoveFavorite}>
+              Remove
+            </button>
+          )}
         </div>
       )}
     </div>
