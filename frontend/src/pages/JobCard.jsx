@@ -66,7 +66,7 @@ const JobCard = ({
 
   const words = job?.description.split("") || [];
 
-  const sortdescription = words.slice(0, 50).join("");
+  const sortdescription = words.slice(0, 280).join("");
 
   return (
     <div className={css.JobCard}>

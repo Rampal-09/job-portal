@@ -77,6 +77,16 @@
   font-size: 14px;
 }
 
+.seeMoreBtn {
+  border: none;
+  font-size: 12px;
+  margin-left: 3px;
+  font-weight: 550;
+  color: #64748b;
+  padding: 2px;
+  border-radius: 5px;
+}
+
 .jobFooter {
   margin-top: 16px;
   padding-top: 16px;
