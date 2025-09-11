@@ -15,8 +15,9 @@ const AppliedJobs = () => {
     try {
       const response = await getAppliedJob();
       setAppliedJobs(response.appliedJobs);
+      
     } catch (err) {
-      console.log(err.message);
+      
     }
   };
   return (

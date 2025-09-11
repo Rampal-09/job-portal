@@ -2,8 +2,10 @@ import { useState } from "react";
 import css from "./Signup.module.css";
 import { signup } from "../services/authApi";
 import validator from "validator";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,6 +14,10 @@ const Signup = () => {
 
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
+
+  const handleClose = () => {
+    navigate("/jobs");
+  };
 
   const clearFieldError = (fieldName) => {
     if (errors[fieldName]) {
@@ -71,6 +77,9 @@ const Signup = () => {
       setConfirmPassword("");
       setRole("candidate");
       setMessage(response.message || "Signup successful!");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (err) {
       const fieldError = {};
       if (err.type === "validation") {
@@ -78,7 +87,6 @@ const Signup = () => {
           fieldError[err.path] = err.msg;
         });
         setErrors(fieldError);
-        
       } else {
         setMessage(err.message || "Signup failed");
       }
@@ -91,6 +99,9 @@ const Signup = () => {
         <h1>Sign up</h1>
         <h4>create your account</h4>
       </div>
+      <button className={css.closeBtn} type="button" onClick={handleClose}>
+        ×
+      </button>
       {message && (
         <div
           style={{

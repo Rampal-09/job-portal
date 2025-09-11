@@ -63,9 +63,12 @@ body {
 .header {
   background: #ffffff;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  position: sticky;
+  /* position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 1000; */
+
+  width: 100%;
+
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -192,7 +195,7 @@ body {
 }
 
 .jobSearchContainer {
-  min-height: 125px;
+  min-height: 140px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   max-width: 1200px;
   margin: 20px auto;
@@ -203,7 +206,8 @@ body {
   padding: 30px;
   gap: 40px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  position: relative;
+  position: sticky;
+  z-index: 1000;
   overflow: hidden;
 }
 .jobSearchContainer::before {

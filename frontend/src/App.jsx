@@ -8,8 +8,20 @@ import { FaSearch } from "react-icons/fa";
 import JobList from "./pages/JobList";
 import AppliedJobs from "./pages/AppliedJobs";
 import FavoriteJobs from "./pages/FavoriteJobs";
+import { useState } from "react";
 
 function App() {
+  const [search, setSearch] = useState("");
+  const [searchTrigger, setSearchTrigger] = useState(false);
+  const [isJobFormOpen, setIsJobFormOpen] = useState(false);
+
+  const handleSearch = () => {
+    setSearchTrigger(!searchTrigger);
+  };
+  const handleJobFormClose = () => {
+    setIsJobFormOpen(false);
+  };
+
   return (
     <Router>
       <section className={styles.section}>
@@ -99,9 +111,13 @@ function App() {
               <input
                 type="text"
                 placeholder="Search Job title,Company ,Skills"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <button className={styles.btn}>Search Job</button>
+            <button className={styles.btn} onClick={handleSearch}>
+              Search Job
+            </button>
           </div>
 
           <div className={styles.registerInfo}>
@@ -116,11 +132,20 @@ function App() {
           </div>
         </div>
       </header>
+      {isJobFormOpen && (
+        <JobForm isOpen={isJobFormOpen} onClose={handleJobFormClose} />
+      )}
       <Routes>
-        <Route path="/" element={<JobList />} />
+        <Route
+          path="/"
+          element={<JobList search={search} searchTrigger={searchTrigger} />}
+        />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/jobs" element={<JobList />} />
+        <Route
+          path="/jobs"
+          element={<JobList search={search} searchTrigger={searchTrigger} />}
+        />
         <Route path="/job-form" element={<JobForm />} />
         <Route path="/applied" element={<AppliedJobs />} />
         <Route path="/favorites" element={<FavoriteJobs />} />

@@ -80,6 +80,7 @@ const FavoriteJobs = () => {
               onApply={handleApply}
               userRole="candidate"
               onRemoveFavorite={handleRemoveFavorite}
+               isApplied={appliedJobs.includes(job._id)}
             />
           ))}
         </div>

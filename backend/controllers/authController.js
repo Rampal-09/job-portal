@@ -83,6 +83,8 @@ exports.postLogout = (req, res, next) => {
 };
 
 exports.getCurrentUser = (req, res, next) => {
+  
+
   try {
     const user = {
       id: req.session.user.id,

@@ -25,9 +25,9 @@ export const createJob = async (jobData) => {
   }
 };
 
-export const getJobs = async () => {
+export const getJobs = async (params = {}) => {
   try {
-    const res = await axios.get(`${API_URL}/jobs`);
+    const res = await axios.get(`${API_URL}/jobs`, { params });
 
     return res.data;
   } catch (err) {}

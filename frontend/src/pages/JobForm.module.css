@@ -17,6 +17,7 @@
   backdrop-filter: blur(4px);
 }
 .formContainer {
+  position: relative;
   background: white;
   border-radius: 16px;
   width: 90%;
@@ -44,12 +45,15 @@
 .closeBtn {
   background: #f1f5f9;
   border: none;
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
   border-radius: 50%;
   font-size: 24px;
   cursor: pointer;
   display: flex;
+  position: absolute;
+  right: 10px;
+  top: 1px;
   justify-content: center;
   align-items: center;
   color: #64748b;

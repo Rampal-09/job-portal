@@ -1,0 +1,247 @@
+/* JobList.module.css */
+
+.jobListContainer {
+  display: flex;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.sideBar {
+  width: 280px;
+  min-width: 280px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.filterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.filterHeader h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.applyBtn {
+  background: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.85rem 1.45rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 10px;
+  flex: 1;
+}
+
+.applyBtn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.applyBtn:active {
+  transform: translateY(0);
+}
+
+.clearBtn {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  flex: 1;
+}
+
+.clearBtn:hover {
+  background: #e2e8f0;
+  color: #475569;
+  border-color: #cbd5e1;
+}
+
+.filterGroup {
+  margin-bottom: 1.5rem;
+}
+
+.filterLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.filterInput,
+.filterSelect {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #374151;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.filterInput:focus,
+.filterSelect:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filterInput::placeholder {
+  color: #9ca3af;
+}
+
+.salaryInputs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.salaryInputs .filterInput {
+  flex: 1;
+}
+
+.filterSelect {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  appearance: none;
+}
+
+.resultsCount {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.resultsCount p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.jobsContainer {
+  flex: 1;
+  min-width: 0;
+}
+
+.noResults {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+.noResults p {
+  margin: 0 0 1rem 0;
+  color: #64748b;
+  font-size: 1.125rem;
+}
+
+@media (max-width: 1024px) {
+  .jobListContainer {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .sideBar {
+    width: 240px;
+    min-width: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .jobListContainer {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .sideBar {
+    width: 100%;
+    position: static;
+    order: 2;
+  }
+
+  .jobsContainer {
+    order: 1;
+  }
+
+  .filterHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .salaryInputs {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .jobListContainer {
+    padding: 0.5rem;
+  }
+
+  .sideBar {
+    padding: 1rem;
+  }
+
+  .filterGroup {
+    margin-bottom: 1rem;
+  }
+}
+
+.jobsContainer > * {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

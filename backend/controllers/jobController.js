@@ -25,7 +25,28 @@ exports.postJob = async (req, res, next) => {
 
 exports.getJob = async (req, res, next) => {
   try {
-    const allJobs = await Job.find().populate("postedBy", "name email role");
+    const { search, location, minSalary, maxSalary } = req.query;
+
+    let query = {};
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: "i" } }, // Case-insensitive search
+        { company: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
+    }
+    if (location) {
+      query.location = { $regex: location, $options: "i" };
+    }
+    if (minSalary || maxSalary) {
+      query.salary = {};
+      if (minSalary) query.salary.$gte = parseInt(minSalary);
+      if (maxSalary) query.salary.$lte = parseInt(maxSalary);
+    }
+    const allJobs = await Job.find(query).populate(
+      "postedBy",
+      "name email role"
+    );
 
     res.status(200).json({ message: "feched all jobs", jobs: allJobs });
   } catch (err) {
