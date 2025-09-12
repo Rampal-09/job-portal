@@ -4,7 +4,16 @@ const User = require("../models/user");
 
 exports.postJob = async (req, res, next) => {
   try {
-    const { title, description, company, location, salary } = req.body;
+    const {
+      title,
+      description,
+      company,
+      location,
+      salary,
+      experienceLevel,
+      jobType,
+      skills,
+    } = req.body;
 
     const newjob = new Job({
       title,
@@ -12,7 +21,10 @@ exports.postJob = async (req, res, next) => {
       company,
       location,
       salary,
+      experienceLevel,
+      jobType,
       postedBy: req.session.user.id,
+      skills,
     });
 
     await newjob.save();
@@ -25,7 +37,15 @@ exports.postJob = async (req, res, next) => {
 
 exports.getJob = async (req, res, next) => {
   try {
-    const { search, location, minSalary, maxSalary } = req.query;
+    const {
+      search,
+      location,
+      minSalary,
+      maxSalary,
+      experienceLevel,
+      jobType,
+      skills,
+    } = req.query;
 
     let query = {};
     if (search) {
@@ -42,6 +62,19 @@ exports.getJob = async (req, res, next) => {
       query.salary = {};
       if (minSalary) query.salary.$gte = parseInt(minSalary);
       if (maxSalary) query.salary.$lte = parseInt(maxSalary);
+      if (experienceLevel) {
+        filter.experienceLevel = experienceLevel;
+      }
+
+      if (jobType) {
+        filter.jobType = jobType;
+      }
+      if (skills) {
+        const skillsArray = Array.isArray(skills) ? skills : [skills];
+        filter.skills = {
+          $in: skillsArray.map((skill) => new RegExp(skill, "i")),
+        };
+      }
     }
     const allJobs = await Job.find(query).populate(
       "postedBy",
@@ -65,7 +98,9 @@ exports.updateJob = async (req, res, next) => {
     job.company = req.body.company;
     job.location = req.body.location;
     job.salary = req.body.salary;
-
+    job.experienceLevel = experienceLevel;
+    job.jobType = jobType;
+    job.skills = skills;
     await job.save();
     console.log("data is save in database");
     res.status(201).json({ job });

@@ -10,6 +10,9 @@ const JobForm = ({ isOpen, onClose }) => {
   const [location, setLocation] = useState("");
   const [salary, setSalary] = useState("");
   const [description, setDescription] = useState("");
+  const [experienceLevel, setExperienceLevel] = useState("");
+  const [jobType, setJobType] = useState("");
+  const [skills, setSkills] = useState("");
 
   const [errors, setError] = useState({});
   const [message, setMessage] = useState("");
@@ -38,6 +41,17 @@ const JobForm = ({ isOpen, onClose }) => {
     } else if (description.length < 50) {
       newErrors.description =
         "Job description must be at least 50 characters long";
+    }
+    if (!experienceLevel) {
+      newErrors.experienceLevel = "Experience level is required";
+    }
+    if (!jobType) {
+      newErrors.jobType = "Job type is required";
+    }
+    if (!skills.trim()) {
+      newErrors.skills = "Skills are required";
+    } else if (skills.length < 5) {
+      newErrors.skills = "Please provide at least 5 characters for skills";
     }
     return newErrors;
   };
@@ -68,6 +82,9 @@ const JobForm = ({ isOpen, onClose }) => {
     setError({});
     setMessage("");
     handleClose();
+    setExperienceLevel("");
+    setJobType("");
+    setSkills("");
   };
 
   const handleJobData = async (e) => {
@@ -85,9 +102,13 @@ const JobForm = ({ isOpen, onClose }) => {
         location,
         salary: Number(salary),
         description,
+        experienceLevel,
+        jobType,
+        skills: skills.split(",").map((skill) => skill.trim()),
       };
       const response = await createJob(jobData);
       setMessage(response.message);
+      navigate("/jobs");
     } catch (err) {
       if (err.type === "auth") {
         setMessage(err.message);
@@ -101,6 +122,9 @@ const JobForm = ({ isOpen, onClose }) => {
     setLocation("");
     setSalary("");
     setDescription("");
+    setExperienceLevel("");
+    setJobType("");
+    setSkills("");
   };
 
   return (
@@ -197,6 +221,72 @@ const JobForm = ({ isOpen, onClose }) => {
             {errors.salary && (
               <div className={css.fieldError}>{errors.salary}</div>
             )}
+          </div>
+          <div className={css.formGroup}>
+            <label htmlFor="experienceLevel">Experience Level</label>
+            <select
+              className={errors.experienceLevel && css.errorInput}
+              id="experienceLevel"
+              value={experienceLevel}
+              onChange={(e) => {
+                setExperienceLevel(e.target.value);
+                clearFieldError("experienceLevel");
+              }}
+            >
+              <option value="">Select Experience Level</option>
+              <option value="entry">Entry Level (0-2 years)</option>
+              <option value="mid">Mid Level (3-5 years)</option>
+              <option value="senior">Senior Level (6-10 years)</option>
+              <option value="lead">Lead/Principal (10+ years)</option>
+            </select>
+            {errors.experienceLevel && (
+              <div className={css.fieldError}>{errors.experienceLevel}</div>
+            )}
+          </div>
+
+          <div className={css.formGroup}>
+            <label htmlFor="jobType">Job Type</label>
+            <select
+              className={errors.jobType && css.errorInput}
+              id="jobType"
+              value={jobType}
+              onChange={(e) => {
+                setJobType(e.target.value);
+                clearFieldError("jobType");
+              }}
+            >
+              <option value="">Select Job Type</option>
+              <option value="full-time">Full Time</option>
+              <option value="part-time">Part Time</option>
+              <option value="contract">Contract</option>
+              <option value="freelance">Freelance</option>
+              <option value="internship">Internship</option>
+              <option value="remote">Remote</option>
+            </select>
+            {errors.jobType && (
+              <div className={css.fieldError}>{errors.jobType}</div>
+            )}
+          </div>
+
+          <div className={css.formGroup}>
+            <label htmlFor="skills">Required Skills</label>
+            <input
+              className={errors.skills && css.errorInput}
+              type="text"
+              id="skills"
+              placeholder="e.g., React, JavaScript, Node.js, MongoDB (comma separated)"
+              value={skills}
+              onChange={(e) => {
+                setSkills(e.target.value);
+                clearFieldError("skills");
+              }}
+            />
+            {errors.skills && (
+              <div className={css.fieldError}>{errors.skills}</div>
+            )}
+            <div className={css.fieldHint}>
+              Enter skills separated by commas
+            </div>
           </div>
           <div className={css.formGroup}>
             <label htmlFor="description">Description</label>

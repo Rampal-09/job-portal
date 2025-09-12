@@ -46,6 +46,27 @@ const JobCard = ({
       return "Date unavailable";
     }
   };
+  const formatExperienceLevel = (level) => {
+    const levels = {
+      entry: "Entry Level",
+      mid: "Mid Level",
+      senior: "Senior Level",
+      lead: "Lead/Principal",
+    };
+    return levels[level] || level;
+  };
+
+  const formatJobType = (type) => {
+    const types = {
+      "full-time": "Full Time",
+      "part-time": "Part Time",
+      contract: "Contract",
+      freelance: "Freelance",
+      internship: "Internship",
+      remote: "Remote",
+    };
+    return types[type] || type;
+  };
 
   const handleEdit = () => {
     if (onEdit) onEdit(job);
@@ -80,6 +101,38 @@ const JobCard = ({
         <span className={css.company}>{job?.company}</span>
         <span className={css.location}>{job?.location}</span>
       </div>
+      <div className={css.jobMeta}>
+        {job?.experienceLevel && (
+          <div className={css.metaItem}>
+            <span className={css.metaLabel}>Experience:</span>
+            <span className={css.metaValue}>
+              {formatExperienceLevel(job.experienceLevel)}
+            </span>
+          </div>
+        )}
+
+        {job?.jobType && (
+          <div className={css.metaItem}>
+            <span className={css.metaLabel}>Type:</span>
+            <span className={css.jobTypeBadge}>
+              {formatJobType(job.jobType)}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {job?.skills && job.skills.length > 0 && (
+        <div className={css.skillsContainer}>
+          <span className={css.skillsLabel}>Skills:</span>
+          <div className={css.skillsList}>
+            {job.skills.map((skill, index) => (
+              <span key={index} className={css.skillTag}>
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
       <p className={css.description}>
         {isExpanded
           ? job?.description
