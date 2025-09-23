@@ -1,6 +1,13 @@
 import "./App.css";
 import styles from "./App.module.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import Signup from "./pages/signup";
 import Login from "./pages/Login";
 import JobForm from "./pages/JobForm";
@@ -9,97 +16,131 @@ import JobList from "./pages/JobList";
 import AppliedJobs from "./pages/AppliedJobs";
 import FavoriteJobs from "./pages/FavoriteJobs";
 import { useState } from "react";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
-function App() {
-  const [search, setSearch] = useState("");
-  const [searchTrigger, setSearchTrigger] = useState(false);
-  const [isJobFormOpen, setIsJobFormOpen] = useState(false);
-
-  const handleSearch = () => {
-    setSearchTrigger(!searchTrigger);
-  };
-  const handleJobFormClose = () => {
-    setIsJobFormOpen(false);
+const Header = ({ search, setSearch, handleSearch }) => {
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+      na;
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
-    <Router>
+    <>
       <section className={styles.section}>
         <div>
-          get ready to discover the career you were weant for
-          <strong>stay turned</strong>
+          get ready to discover the career you were meant for
+          <strong> stay tuned</strong>
         </div>
       </section>
+
       <header className={styles.header}>
         <div className={styles.jobDataContainer}>
           <div className={styles.logoSection}>
-            <a href="#" className={styles.logo}>
+            <Link to="/jobs" className={styles.logo}>
               <span className={styles.logoText}>jobPortal</span>
               <span className={styles.tagLine}>Find your Dream Job</span>
-            </a>
+            </Link>
           </div>
+
           <nav className={styles.nav}>
             <ul className={styles.navList}>
+              {isAuthenticated && user?.role === "employer" && (
+                <li className={styles.navItem}>
+                  <Link
+                    to="/job-form"
+                    className={`${styles.navLink} ${
+                      location.pathname === "/job-form" ? styles.active : ""
+                    }`}
+                  >
+                    Post Job
+                  </Link>
+                </li>
+              )}
+
               <li className={styles.navItem}>
                 <Link
-                  to="job-form"
+                  to="/jobs"
                   className={`${styles.navLink} ${
-                    location.pathname === "/signup" ? styles.active : ""
-                  }`}
-                >
-                  Post Job
-                </Link>
-              </li>
-              <li className={styles.navItem}>
-                <Link
-                  to="jobs"
-                  className={`${styles.navLink} ${
-                    location.pathname === "/signup" ? styles.active : ""
+                    location.pathname === "/jobs" ? styles.active : ""
                   }`}
                 >
                   Job List
                 </Link>
               </li>
-              <li className={styles.navItem}>
-                <Link
-                  to="applied"
-                  className={`${styles.navLink} ${
-                    location.pathname === "/signup" ? styles.active : ""
-                  }`}
-                >
-                  Applied Jobs
-                </Link>
-              </li>
-              <li className={styles.navItem}>
-                <Link
-                  to="/favorites"
-                  className={`${styles.navLink} ${
-                    location.pathname === "/signup" ? styles.active : ""
-                  }`}
-                >
-                  Favorite Jobs
-                </Link>
-              </li>
-              <li className={styles.navItem}>
-                <Link
-                  to="/signup"
-                  className={`${styles.navLink} ${
-                    location.pathname === "/signup" ? styles.active : ""
-                  }`}
-                >
-                  signup
-                </Link>
-              </li>
-              <li className={styles.navItem}>
-                <Link
-                  to="login"
-                  className={`${styles.navLink} ${
-                    location.pathname === "/signup" ? styles.active : ""
-                  }`}
-                >
-                  login
-                </Link>
-              </li>
+
+              {isAuthenticated && user?.role === "candidate" && (
+                <>
+                  <li className={styles.navItem}>
+                    <Link
+                      to="/applied"
+                      className={`${styles.navLink} ${
+                        location.pathname === "/applied" ? styles.active : ""
+                      }`}
+                    >
+                      Applied Jobs
+                    </Link>
+                  </li>
+                  <li className={styles.navItem}>
+                    <Link
+                      to="/favorites"
+                      className={`${styles.navLink} ${
+                        location.pathname === "/favorites" ? styles.active : ""
+                      }`}
+                    >
+                      Favorite Jobs
+                    </Link>
+                  </li>
+                </>
+              )}
+
+              {!isAuthenticated ? (
+                <>
+                  <li className={styles.navItem}>
+                    <Link
+                      to="/signup"
+                      className={`${styles.navLink} ${
+                        location.pathname === "/signup" ? styles.active : ""
+                      }`}
+                    >
+                      Signup
+                    </Link>
+                  </li>
+                  <li className={styles.navItem}>
+                    <Link
+                      to="/login"
+                      className={`${styles.navLink} ${
+                        location.pathname === "/login" ? styles.active : ""
+                      }`}
+                    >
+                      Login
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <li className={styles.navItem}>
+                  <div className={styles.userSection}>
+                    <span className={styles.welcomeText}>
+                      Welcome, {user?.name}!
+                    </span>
+                    <button
+                      onClick={handleLogout}
+                      className={`${styles.navLink} ${styles.logoutBtn}`}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </li>
+              )}
             </ul>
           </nav>
         </div>
@@ -110,7 +151,7 @@ function App() {
               <FaSearch className={styles.icon} />
               <input
                 type="text"
-                placeholder="Search Job title,Company ,Skills"
+                placeholder="Search Job title, Company, Skills"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -125,16 +166,43 @@ function App() {
             <span className={styles.span2}>
               looking for your first dream job
             </span>
-
             <div>
-              <a href="/signup">register now</a>
+              <Link to="/signup">register now</Link>
             </div>
           </div>
         </div>
       </header>
+    </>
+  );
+};
+
+const AppContent = () => {
+  const [search, setSearch] = useState("");
+  const [searchTrigger, setSearchTrigger] = useState(false);
+  const [isJobFormOpen, setIsJobFormOpen] = useState(false);
+
+  const handleSearch = () => {
+    setSearchTrigger(!searchTrigger);
+  };
+
+  const handleJobFormClose = () => {
+    setIsJobFormOpen(false);
+  };
+
+  return (
+    <>
+      <Header
+        search={search}
+        setSearch={setSearch}
+        handleSearch={handleSearch}
+        isJobFormOpen={isJobFormOpen}
+        setIsJobFormOpen={setIsJobFormOpen}
+      />
+
       {isJobFormOpen && (
         <JobForm isOpen={isJobFormOpen} onClose={handleJobFormClose} />
       )}
+
       <Routes>
         <Route
           path="/"
@@ -150,7 +218,19 @@ function App() {
         <Route path="/applied" element={<AppliedJobs />} />
         <Route path="/favorites" element={<FavoriteJobs />} />
       </Routes>
-    </Router>
+    </>
+  );
+};
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <AppContent />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

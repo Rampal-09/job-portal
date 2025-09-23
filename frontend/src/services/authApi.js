@@ -53,3 +53,15 @@ export const login = async (loginData) => {
     }
   }
 };
+
+export const logout = async () => {
+  try {
+    const res = await axios.post(`${API_URL}/auth/logout`);
+    return res.data;
+  } catch (err) {
+    throw {
+      type: "general",
+      message: err.response?.data?.message || "Logout failed",
+    };
+  }
+};

@@ -10,11 +10,13 @@ import { DeleteJob } from "../services/jobApi";
 import { applyJob } from "../services/jobApi";
 
 import { addToFavoite } from "../services/jobApi";
+import { useAuth } from "../context/AuthContext";
 
 const JobList = ({ search, searchTrigger }) => {
   const [jobs, setJobs] = useState([]);
   const [allJobs, setAllJobs] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
+  const { user: currentUser } = useAuth();
+
   const [editingJob, setEditingJob] = useState(null);
   const [isEditModelOpen, setIsEditModelOpen] = useState(false);
   const [jobType, setJobType] = useState("");
@@ -71,15 +73,6 @@ const JobList = ({ search, searchTrigger }) => {
       setEditingJob(null);
     } catch (err) {}
   };
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await getCurrentUser();
-        setCurrentUser(userData?.user);
-      } catch (err) {}
-    };
-    fetchUser();
-  }, []);
 
   useEffect(() => {
     const fetchJobs = async () => {
