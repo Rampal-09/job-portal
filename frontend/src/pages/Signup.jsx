@@ -3,8 +3,10 @@ import css from "./Signup.module.css";
 import { signup } from "../services/authApi";
 import validator from "validator";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Signup = () => {
+  const { signup } = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

@@ -2,23 +2,37 @@ import { useEffect } from "react";
 import { getAppliedJob } from "../services/jobApi";
 import { useState } from "react";
 import JobCard from "./JobCard";
+import { useAuth } from "../context/AuthContext";
 
 import style from "./Applied.module.css";
 const AppliedJobs = () => {
+  const { user: currentUser } = useAuth();
   const [appliedjobs, setAppliedJobs] = useState([]);
 
   useEffect(() => {
     fetchAppliedJobs();
   }, []);
 
+  const handleApplyJob = async (jobId) => {
+    if (appliedjobs.includes(jobId)) {
+      alert("You already applied for this job!");
+      return;
+    }
+    try {
+      const response = await applyJob(jobId);
+      setAppliedJobs((prev) => [...prev, jobId]);
+      alert("Successfully applied for the job!");
+    } catch (err) {
+      console.error("Apply job error:", err);
+      alert(err.message || "Failed to apply for the job");
+    }
+  };
+
   const fetchAppliedJobs = async () => {
     try {
       const response = await getAppliedJob();
       setAppliedJobs(response.appliedJobs);
-      
-    } catch (err) {
-      
-    }
+    } catch (err) {}
   };
   return (
     <div className={style.container}>
@@ -41,7 +55,13 @@ const AppliedJobs = () => {
         <div className={style.jobsGrid}>
           {appliedjobs.map((job) => (
             <div className={style.jobItem} key={job._id}>
-              <JobCard job={job}></JobCard>
+              <JobCard
+                job={job}
+                userRole={currentUser?.role}
+                isApplied={true}
+                userId={currentUser?.id}
+                onApply={handleApplyJob}
+              ></JobCard>
             </div>
           ))}
         </div>

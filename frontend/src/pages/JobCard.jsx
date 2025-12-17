@@ -14,7 +14,7 @@ const JobCard = ({
 }) => {
   if (!job) return null;
 
-  const [isExpanded, setIsExpended] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const isOwner =
     userRole === "employer" && job.postedBy && job.postedBy._id === userId;
 
@@ -29,7 +29,7 @@ const JobCard = ({
       if (diffDays === 0) {
         return "Today";
       } else if (diffDays === 1) {
-        return "yesterDay";
+        return "YesterDay";
       } else if (diffDays < 7) {
         return `${diffDays} days ago`;
       } else if (diffDays < 30) {
@@ -82,12 +82,12 @@ const JobCard = ({
   };
 
   const toggleDescription = () => {
-    setIsExpended((prev) => !prev);
+    setIsExpanded((prev) => !prev);
   };
 
-  const words = job?.description.split("") || [];
+  const words = job?.description?.split(" ") || [];
 
-  const sortdescription = words.slice(0, 280).join("");
+  const shortDescription = words.slice(0, 20).join(" ");
 
   return (
     <div className={css.JobCard}>
@@ -120,7 +120,6 @@ const JobCard = ({
           </div>
         )}
       </div>
-
       {job?.skills && job.skills.length > 0 && (
         <div className={css.skillsContainer}>
           <span className={css.skillsLabel}>Skills:</span>
@@ -133,16 +132,18 @@ const JobCard = ({
           </div>
         </div>
       )}
+
       <p className={css.description}>
         {isExpanded
           ? job?.description
-          : sortdescription + (words.length > 60 ? "..." : "")}
-        {words.length > 60 && (
+          : shortDescription + (words.length > 20 ? "..." : "")}{" "}
+        {words.length > 20 && (
           <button className={css.seeMoreBtn} onClick={toggleDescription}>
             {isExpanded ? "See less" : "See more"}
           </button>
         )}
       </p>
+
       <div className={css.jobFooter}>
         <div className={css.postInfo}>
           <span className={css.postedBy}>{job?.postedBy?.name}</span>
@@ -161,9 +162,16 @@ const JobCard = ({
       )}
       {userRole === "candidate" && (
         <div className={css.candidateActions}>
-          <button className={css.applyBtn} onClick={() => onApply(job._id)}>
-            {isApplied ? "Applied" : "Apply"}
-          </button>
+          {onApply && !isApplied && (
+            <button
+              className={css.applyBtn}
+              onClick={() => onApply(job._id)}
+              disabled={isApplied}
+            >
+              {isApplied ? "Applied" : "Apply"}
+            </button>
+          )}
+          {isApplied && <span>Applied</span>}
           {onFavorite && (
             <button className={css.saveBtn} onClick={() => onFavorite(job._id)}>
               Save

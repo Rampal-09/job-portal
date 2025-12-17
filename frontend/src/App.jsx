@@ -17,6 +17,7 @@ import AppliedJobs from "./pages/AppliedJobs";
 import FavoriteJobs from "./pages/FavoriteJobs";
 import { useState } from "react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import NotFound from "./pages/NotFound";
 
 const Header = ({ search, setSearch, handleSearch }) => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -28,7 +29,6 @@ const Header = ({ search, setSearch, handleSearch }) => {
       setTimeout(() => {
         navigate("/login");
       }, 2000);
-      na;
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -217,6 +217,7 @@ const AppContent = () => {
         <Route path="/job-form" element={<JobForm />} />
         <Route path="/applied" element={<AppliedJobs />} />
         <Route path="/favorites" element={<FavoriteJobs />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

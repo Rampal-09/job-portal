@@ -8,14 +8,16 @@ import { updateJob } from "../services/jobApi";
 // import job from "../../../backend/models/job";
 import { DeleteJob } from "../services/jobApi";
 import { applyJob } from "../services/jobApi";
-
+import { getAppliedJob } from "../services/jobApi";
 import { addToFavoite } from "../services/jobApi";
 import { useAuth } from "../context/AuthContext";
+// import { getAppliedJob } from "../../../backend/controllers/jobController";
 
 const JobList = ({ search, searchTrigger }) => {
   const [jobs, setJobs] = useState([]);
   const [allJobs, setAllJobs] = useState([]);
   const { user: currentUser } = useAuth();
+  const [appliedJobs, setAppliedJobs] = useState([]);
 
   const [editingJob, setEditingJob] = useState(null);
   const [isEditModelOpen, setIsEditModelOpen] = useState(false);
@@ -26,11 +28,33 @@ const JobList = ({ search, searchTrigger }) => {
   const [minSalary, setMinSalary] = useState("");
   const [maxSalary, setMaxSalary] = useState("");
 
+  const fetchAppliedJobs = async () => {
+    try {
+      const response = await getAppliedJob();
+      const jobIds = response.appliedJobs?.map((job) => job._id) || [];
+      setAppliedJobs(jobIds);
+    } catch (error) {
+      console.error("Failed to fetch applied jobs:", error);
+      setAppliedJobs([]);
+    }
+  };
+
+  useEffect(() => {
+    if (currentUser?.role === "candidate") {
+      fetchAppliedJobs();
+    }
+  }, [currentUser]);
+
   const handleApplyJob = async (jobId) => {
+    if (appliedJobs.includes(jobId)) {
+      alert("You already applied for this job!");
+    }
     try {
       const response = await applyJob(jobId);
+      setAppliedJobs((prev) => [...prev, jobId]);
       alert("Successfully applied for the job!");
     } catch (err) {
+      console.error("Apply job error:", err);
       alert(err.message);
     }
   };
@@ -218,6 +242,8 @@ const JobList = ({ search, searchTrigger }) => {
               onDelete={handleDelteJob}
               onApply={handleApplyJob}
               onFavorite={handleFavoriteJob}
+              appliedJobs={appliedJobs}
+              isApplied={appliedJobs.includes(job._id)}
             />
           ))
         ) : (

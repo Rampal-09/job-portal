@@ -2,9 +2,11 @@ import { use, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import css from "./Login.module.css";
 import { login } from "../services/authApi";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

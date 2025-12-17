@@ -94,7 +94,7 @@ const JobForm = ({ isOpen, onClose }) => {
       setError(newErros);
 
       return;
-    }
+    } 
     try {
       const jobData = {
         title,

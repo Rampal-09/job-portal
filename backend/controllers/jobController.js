@@ -134,6 +134,7 @@ exports.postApplyJob = async (req, res, next) => {
   try {
     const jobId = req.params.id;
     const userId = req.session.user.id;
+    console.log(userId);
 
     const job = await Job.findById(jobId);
     if (!job) {

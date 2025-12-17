@@ -42,6 +42,17 @@ app.use(
 
 app.use("/auth", authRouter);
 app.use(jobRouter);
+app.use((req, res, next) => {
+  if (
+    req.path.startsWith("/api/") ||
+    req.path.startsWith("/auth/") ||
+    req.path.startsWith("/jobs/")
+  ) {
+    res.status(404).json({ message: "API endpoint not found" });
+  } else {
+    next();
+  }
+});
 
 mongoose
   .connect(process.env.MONGO_URI)
